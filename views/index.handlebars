@@ -1,34 +1,58 @@
-<div class="container">
-    <span>Expense Tracker App</span>
+<div class="container mx-auto p-4">
+    <span class="text-3xl mb-4">Expense Tracker App</span>
 
-    <div class="addExpense">
-        <label for="">Add Expense</label>
-        <div>
-            <label for="">description</label>
-            <input type="text">
+    <div class="flash-messages">
+        {{#if messages.error}}
+        <div class="error-msg">
+            {{messages.error}}
         </div>
-        <div>
-            <label for="">description</label>
-            <input type="text">
-        </div>
+        {{/if}}
 
-        <div class="categories">
-            <input type="radio" name="category" id="" value="id">
-            <label for="1"></label>
-
+        {{#if messages.success}}
+        <div class="success-msg">
+            {{messages.success}}
         </div>
-        <div class="addBtn">
-            <button type="submit">ADD</button>
-        </div>
+        {{/if}}
     </div>
 
-    <div class="total">
-        <div class="totalExpense">
-            <label for="">total expenses: {{}}</label>
-
+    <form class="addExpense bg-gray-100 p-4 rounded-md shadow-md mb-8" action="/addExpense" method="post">
+        <label class="block mb-2" for="expenseDescription">Add Expense</label>
+        <div class="mb-4">
+            <label class="block mb-1" for="description">Description</label>
+            <input class="w-full px-3 py-2 border rounded-md" type="text" id="description" name="description"
+                placeholder="Enter description" required>
+        </div>
+        <div class="mb-4">
+            <label class="block mb-1" for="amount">Amount</label>
+            <input class="w-full px-3 py-2 border rounded-md" type="number" id="amount" name="amount"
+                placeholder="Enter amount" required>
         </div>
 
-        <div class="summary">
-             </div>
+        <div class="categories mb-4 flex flex-row">
+            <label class="block mb-1">Category</label>
+            {{#each categories}}
+            <div class="flex items-center mr-4 center">
+                <input type="radio" name="category" id="category{{this.category_type}}" value="{{this.category_type}}"
+                    class="mr-2" required>
+                <label for="category{{this.category_type}}">{{this.category_type}}</label>
+            </div>
+            {{/each}}
+        </div>
+
+
+</div>
+<div class="addBtn">
+    <button class="px-4 py-2 bg-blue-500 text-white rounded-md" type="submit">ADD</button>
+</div>
+</form>
+
+<div class="total bg-gray-100 p-4 rounded-md shadow-md">
+    <div class="totalExpense mb-4">
+        <label class="block font-bold mb-2" for="totalExpenses">Total expenses: R {{totalExpenses}}</label>
     </div>
+
+    <div class="summary">
+        <!-- Display summary here -->
+    </div>
+</div>
 </div>

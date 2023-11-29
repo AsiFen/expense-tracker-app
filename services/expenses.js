@@ -118,5 +118,32 @@ export default function expenseTracker(db) {
             }
         },
 
+        categoryNames: async () => {
+            try {
+                let results = await db.any('select category_type from category')
+                return results
+            } catch (error) {
+                return { error: error.message };
+
+            }
+        },
+
+        // Function to calculate total expenses
+        //use sum function to sum all totals from all expenses and categories
+        //return the sum or 0 if there is none
+        totalExpenses: async () => {
+            try {
+                // Query to calculate the total expenses
+                const totalExpensesQuery = await db.one('SELECT SUM(total) AS total_expenses FROM expense');
+
+                // Extract the total expenses from the query result
+                const totalExpenses = totalExpensesQuery.total_expenses || 0;
+
+                return totalExpenses;
+            } catch (error) {
+                throw new Error('Error fetching total expenses: ' + error.message);
+            }
+        }
+
     }
 }
