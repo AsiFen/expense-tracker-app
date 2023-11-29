@@ -88,8 +88,29 @@ app.post('/addExpense', async (req, res) => {
         res.redirect('/');
     }
 
-})
 
+}); 
+app.post('/deleteExpense', async (req, res) => {
+    try {
+        const expenseIdToDelete = req.body.expenseId; 
+
+        // Call the deleteExpense function from your expenseTracker with the expenseIdToDelete
+        const deleteResult = await expense_Tracker.deleteExpense(expenseIdToDelete);
+
+        if (deleteResult.message === 'Expense deleted successfully.') {
+            req.flash('success', 'Expense deleted successfully.');
+        } else {
+            req.flash('error', 'Failed to delete expense.');
+        }
+
+        // Redirect back to the page displaying all expenses after deletion
+        res.redirect('/viewExpenses');
+    } catch (error) {
+        // Handle any errors that might occur during the deletion process
+        req.flash('error', 'An error occurred while deleting the expense.');
+        res.redirect('/viewExpenses');
+    }
+});
 
 //process the enviroment the port is running on
 let PORT = process.env.PORT || 4545;

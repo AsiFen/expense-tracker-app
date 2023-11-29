@@ -19,7 +19,7 @@ export default function expenseTracker(db) {
                     return { error: 'Category not found.' };
 
                 } else {
-                    let total = amount; // Default total to amount
+                    let total = amount; 
                     if (category[0].id === 2 || category[0].id === 5) {
                         // Monthly or Once-off
                         total *= 1;
@@ -51,7 +51,7 @@ export default function expenseTracker(db) {
             try {
                 // Select all expenses with category names from the expenses table and join with the category table
                 const results = await db.any(`
-        SELECT e.expense, e.amount, e.total, c.category_type AS category
+        SELECT e.id, e.expense, e.amount, e.total, c.category_type AS category
         FROM expense e
         INNER JOIN category c ON e.category_id = c.id
     `);

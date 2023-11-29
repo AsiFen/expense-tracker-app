@@ -1,15 +1,37 @@
 <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6">All Expenses</h1>
 
+    <div class="flash-messages">
+        {{#if messages.error}}
+        <div class="error-msg">
+            {{messages.error}}
+        </div>
+        {{/if}}
+
+        {{#if messages.success}}
+        <div class="success-msg">
+            {{messages.success}}
+        </div>
+        {{/if}}
+
+    </div>
     <div class="bg-white shadow-md rounded my-6">
         <h2 class="px-4 py-3 bg-gray-200 font-semibold">Expense Table</h2>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white">
                 <thead>
                     <tr>
-                        <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">Expense/Description</th>
-                        <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">Category</th>
-                        <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">Amount</th>
+                        <th
+                            class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">
+                            Expense/Description</th>
+                        <th
+                            class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">
+                            Category</th>
+                        <th
+                            class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">
+                            Amount</th>
+                        <th><i class="material-icons">&#xe872;</i>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -18,6 +40,13 @@
                         <td class="px-6 py-4 whitespace-nowrap">{{this.expense}}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{this.category}}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{this.amount}}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <form action="/deleteExpense" method="POST">
+                                <input type="hidden" name="expenseId" value="{{this.id}}">
+                                <button type="submit"
+                                    class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
