@@ -1,0 +1,29 @@
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">All Expenses</h1>
+
+    <div class="bg-white shadow-md rounded my-6">
+        <h2 class="px-4 py-3 bg-gray-200 font-semibold">Expense Table</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">Expense/Description</th>
+                        <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">Category</th>
+                        <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold uppercase tracking-wider">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each allExpenses}}
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-6 py-4 whitespace-nowrap">{{this.expense}}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{this.category}}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{this.amount}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a href="/" class="text-blue-500 block mt-4 hover:underline">Go Back Home</a>
+</div>

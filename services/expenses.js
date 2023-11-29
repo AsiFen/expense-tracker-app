@@ -49,15 +49,19 @@ export default function expenseTracker(db) {
 
         allExpenses: async () => {
             try {
-                // Select all the expenses and their details from the expenses table 
-                const results = await db.any('SELECT * FROM expense');
+                // Select all expenses with category names from the expenses table and join with the category table
+                const results = await db.any(`
+        SELECT e.expense, e.amount, e.total, c.category_type AS category
+        FROM expense e
+        INNER JOIN category c ON e.category_id = c.id
+    `);
 
                 if (results.length > 0) {
                     // Return the expenses if there are any
                     return results;
                 } else {
                     // Return a message when there are no expenses
-                    return { message: 'No expenses found.' };
+                    return { message: 'No expenses found.', results };
                 }
             } catch (error) {
                 // Return error if there's an issue with the database query
@@ -106,17 +110,25 @@ export default function expenseTracker(db) {
         },
 
         categoryTotals: async () => {
+            // Retrieve totals for all categories
+            //use SUM function to calculate the total expense amount for each category
+            //use the group by function to group based on categories
+            //use join function to retriev the names of the cataegories
             try {
-                // Retrieve totals for all categories
-                //use SUM function to calculate the total expense amount for each category
-                //use the group by function to group based on categories
-                const categoryTotals = await db.any('SELECT category_id, SUM(total) AS total FROM expense GROUP BY category_id');
+                // Retrieve totals for all categories with their names
+                const categoryTotals = await db.any(`
+                            SELECT c.category_type, SUM(e.total) AS total
+                            FROM expense e
+                            INNER JOIN category c ON e.category_id = c.id
+                            GROUP BY c.category_type
+                        `);
 
                 return categoryTotals;
             } catch (error) {
                 return { error: error.message };
             }
         },
+
 
         categoryNames: async () => {
             try {

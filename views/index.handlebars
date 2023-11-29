@@ -1,15 +1,15 @@
-<div class="container mx-auto p-4">
-    <span class="text-3xl mb-4">Expense Tracker App</span>
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl mb-4">Expense Tracker App</h1>
 
     <div class="flash-messages">
         {{#if messages.error}}
-        <div class="error-msg">
+        <div class="bg-red-200 text-red-800 p-2 mb-4 rounded">
             {{messages.error}}
         </div>
         {{/if}}
 
         {{#if messages.success}}
-        <div class="success-msg">
+        <div class="bg-green-200 text-green-800 p-2 mb-4 rounded">
             {{messages.success}}
         </div>
         {{/if}}
@@ -31,7 +31,7 @@
         <div class="categories mb-4 flex flex-row">
             <label class="block mb-1">Category</label>
             {{#each categories}}
-            <div class="flex items-center mr-4 center">
+            <div class="flex items-center mr-4">
                 <input type="radio" name="category" id="category{{this.category_type}}" value="{{this.category_type}}"
                     class="mr-2" required>
                 <label for="category{{this.category_type}}">{{this.category_type}}</label>
@@ -39,20 +39,40 @@
             {{/each}}
         </div>
 
+        <div class="addBtn">
+            <button class="px-4 py-2 bg-blue-500 text-white rounded-md" type="submit">ADD</button>
+        </div>
+    </form>
 
-</div>
-<div class="addBtn">
-    <button class="px-4 py-2 bg-blue-500 text-white rounded-md" type="submit">ADD</button>
-</div>
-</form>
+    <div class="total bg-gray-100 p-4 rounded-md shadow-md">
+        <div class="totalExpense mb-4">
+            <label class="block font-bold mb-2" for="totalExpenses">Total expenses: R {{totalExpenses}}</label>
+        </div>
 
-<div class="total bg-gray-100 p-4 rounded-md shadow-md">
-    <div class="totalExpense mb-4">
-        <label class="block font-bold mb-2" for="totalExpenses">Total expenses: R {{totalExpenses}}</label>
+        <div class="summary">
+            <div class="categoryTotals">
+                <h2 class="mb-2 text-lg font-semibold">Category Totals</h2>
+                <div class="overflow-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2">Category</th>
+                                <th class="px-4 py-2">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each categoriesWithTotals}}
+                            <tr>
+                                <td class="px-4 py-2">{{this.category_type}}</td>
+                                <td class="px-4 py-2">{{this.total}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="summary">
-        <!-- Display summary here -->
-    </div>
-</div>
+    <a href="/viewExpenses" class="text-blue-500 block mt-4 hover:underline">See All Expenses</a>
 </div>

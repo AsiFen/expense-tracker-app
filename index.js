@@ -37,10 +37,12 @@ app.use(express.static('public'))
 
 app.get('/', async (req, res) => {
     let categories = await expense_Tracker.categoryNames();
+    const categoriesWithTotals = await expense_Tracker.categoryTotals(); // Fetch categories with totals
     const totalExpenses = await expense_Tracker.totalExpenses(); 
-console.log(totalExpenses);
+console.log(categoriesWithTotals);
     res.render('index', {
         categories: categories,
+        categoriesWithTotals,
         totalExpenses,
         messages: {
             error: req.flash('error'),
@@ -49,6 +51,23 @@ console.log(totalExpenses);
     });
 });
 
+app.get('/viewExpenses', async (req, res) => {
+    try {
+        const allExpenses = await expense_Tracker.allExpenses(); 
+
+        console.log(allExpenses);
+        res.render('viewExpenses', {
+           allExpenses,
+            messages: {
+                error: req.flash('error'),
+                success: req.flash('success')
+            }
+        });
+    } catch (error) {
+        req.flash('error', error.message || 'Error fetching all expenses');
+        res.redirect('/viewExpenses');
+    }
+});
 
 app.post('/addExpense', async (req, res) => {
     const category = req.body.category;
