@@ -39,7 +39,7 @@ app.get('/', async (req, res) => {
     let categories = await expense_Tracker.categoryNames();
     const categoriesWithTotals = await expense_Tracker.categoryTotals(); // Fetch categories with totals
     const totalExpenses = await expense_Tracker.totalExpenses(); 
-console.log(categoriesWithTotals);
+
     res.render('index', {
         categories: categories,
         categoriesWithTotals,
@@ -55,7 +55,6 @@ app.get('/viewExpenses', async (req, res) => {
     try {
         const allExpenses = await expense_Tracker.allExpenses(); 
 
-        console.log(allExpenses);
         res.render('viewExpenses', {
            allExpenses,
             messages: {
@@ -111,6 +110,30 @@ app.post('/deleteExpense', async (req, res) => {
         res.redirect('/viewExpenses');
     }
 });
+
+app.get('/filterExpense', async (req, res) => {
+    try {
+        const categories = await expense_Tracker.categoryNames();
+        res.render('filterExpense', { categories });
+    } catch (error) {
+        // Handle errors appropriately
+        res.status(500).send('Error occurred while fetching categories.');
+    }
+});
+
+app.post('/filterExpense', async (req, res) => {
+    try {
+        const category_chosen = req.body.category_chosen;
+        const filteredExpenses = await expense_Tracker.expensesForCategory(category_chosen);
+        const categories = await expense_Tracker.categoryNames();
+        console.log(filteredExpenses);
+        res.render('filterExpense', { categories, filteredExpenses, selectedCategory: category_chosen });
+    } catch (error) {
+        // Handle errors appropriately
+        res.status(500).send('Error occurred while filtering expenses.');
+    }
+});
+
 
 //process the enviroment the port is running on
 let PORT = process.env.PORT || 4545;
